@@ -1,21 +1,17 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Loja</title><meta name="description" content="Produtos com entrega para todo o Brasil e pagamento por PIX.">
+<title>Loja</title><meta name="description" content="Produtos com entrega para todo o Brasil.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 20 20%22><text y=%2216%22 font-size=%2216%22>🏠</text></svg>">
 <link rel="stylesheet" href="css/tema.css"></head><body>
-<div class="aviso">Pagamento por PIX · Entrega para todo o Brasil</div>
+<div class="aviso">Entrega para todo o Brasil · Pedido pelo WhatsApp</div>
 <header><h1 id="logo">Loja</h1><input id="q" type="search" placeholder="Buscar produto" aria-label="Buscar produto"><button class="btn" onclick="abrir()" aria-label="Abrir carrinho">🛒 <span id="n">0</span></button></header>
 <section id="hero"></section>
-<div class="selos"><span>⚡ Pagamento por PIX</span><span>📦 Entrega para todo o Brasil</span><span>💬 Atendimento pelo WhatsApp</span></div>
 <div class="filtros"><h2 class="titulo">Todos os produtos</h2><select id="cat" aria-label="Categoria"></select><select id="ord" aria-label="Ordenar"><option value="">Ordenar</option><option value="asc">Menor preço</option><option value="desc">Maior preço</option></select></div>
 <main id="grid"></main>
-<footer><div class="fcols"><div><b>Compre com segurança</b><span>Pagamento por PIX ou finalização pelo WhatsApp.</span></div><div><b>Entrega</b><span>Frete calculado pelo CEP no carrinho.</span></div><div><b>Atendimento</b><span>Fale com a gente pelo WhatsApp.</span></div></div><p id="rodape"></p></footer>
+<footer><div class="fcols"><div><b>Compre com segurança</b><span>Seu pedido é registrado e confirmado pelo WhatsApp.</span></div><div><b>Entrega</b><span>Frete calculado no pedido.</span></div><div><b>Atendimento</b><span>Fale com a gente pelo WhatsApp.</span></div></div><p id="rodape"></p></footer>
 <dialog id="dp"></dialog>
 <dialog id="dc"><button class="x" onclick="dc.close()" aria-label="Fechar">✕</button><h2>Seu carrinho</h2><div id="itens"></div>
-<div class="cupom"><input id="cup" placeholder="Cupom de desconto"><button class="btn sec" onclick="cup()">Aplicar</button></div><p id="resumo"></p>
-<form id="f" class="g" onsubmit="return false"><input name="nome" placeholder="Nome completo" required><input name="cpf" placeholder="CPF" required inputmode="numeric"><input name="email" type="email" placeholder="E-mail" required><input name="tel" type="tel" placeholder="Telefone" required>
-<input name="cep" id="cep" placeholder="CEP (calcula o frete)" required inputmode="numeric"><input name="end" id="end" placeholder="Endereço" required><input name="num" placeholder="Número" required></form>
-<div class="acoes"><button class="btn" onclick="pagar()">Pagar com PIX</button><button class="btn sec" onclick="zap()">Finalizar pelo WhatsApp</button></div></dialog>
-<script src="js/utils.js"></script>
-<script src="js/config.js"></script>
-<script src="js/app.js"></script>
-<script src="js/pix.js"></script>
+<input id="cup" placeholder="Cupom (aplicado ao enviar o pedido)" style="width:100%"><p id="resumo"></p>
+<form id="f" class="g" onsubmit="return false"><input name="nome" placeholder="Nome completo" required maxlength="120"><input name="cpf" placeholder="CPF" required inputmode="numeric" maxlength="14"><input name="email" type="email" placeholder="E-mail" maxlength="120"><input name="tel" type="tel" placeholder="Telefone" required maxlength="20">
+<input name="cep" id="cep" placeholder="CEP" required inputmode="numeric" maxlength="9"><input name="end" id="end" placeholder="Endereço" required maxlength="250"><input name="num" placeholder="Número" required maxlength="20"></form>
+<div class="acoes"><button class="btn" onclick="enviar()">Enviar pedido</button></div></dialog>
+<script src="js/app.js"></script></body></html>
