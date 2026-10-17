@@ -1,11 +1,12 @@
 {
- "nome": "Casa & Lar Eletro",
- "banner_titulo": "Eletrodomésticos para a casa toda",
- "banner_texto": "Geladeiras, fogões e mais, com entrega para todo o Brasil.",
- "rodape": "© Casa & Lar Eletro · Troque este texto em data/config.json",
+ "nome": "SHOPEE",
+ "banner_titulo": "Tudo o que você procura em um só lugar",
+ "banner_texto": "Milhares de produtos, com entrega para todo o Brasil.",
+ "rodape": "© SHOPEE",
  "whatsapp": "5500000000000",
  "api_pagamento": "/api/criar-pagamento",
- "avaliacoes_auto_aprovar": true,
+ "supabase_url": "COLE_AQUI_A_PROJECT_URL",
+ "supabase_key": "COLE_AQUI_A_CHAVE_ANON_PUBLICA",
  "frete": {
   "gratis_acima": 999999999,
   "base": 14.9,
