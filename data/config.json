@@ -2,15 +2,9 @@
  "nome": "Casa & Lar Eletro",
  "banner_titulo": "Tudo o que você procura em um só lugar",
  "banner_texto": "Milhares de produtos, com entrega para todo o Brasil.",
- "rodape": "© Minha Loja",
+ "rodape": "© Casa & Lar Eletro",
  "whatsapp": "5500000000000",
- "api_pagamento": "/api/criar-pagamento",
- "supabase_url": "https://zslcrkrxlavarouvqeqj.supabase.co",
- "supabase_key": "sb_publishable_OIkt7DLCHa8CQpSMZoB-ag_FoZhynXD",
- "frete": {
-  "gratis_acima": 999999999,
-  "base": 14.9,
-  "regioes": {"0":14.9,"1":14.9,"2":14.9,"3":14.9,"4":14.9,"5":14.9,"6":14.9,"7":14.9,"8":14.9,"9":14.9}
- },
- "cupons": {"BEMVINDO": 10}
+ "frete_exibicao": 14.9,
+ "supabase_url": "COLE_A_URL_AQUI",
+ "supabase_key": "COLE_A_CHAVE_PUBLISHABLE_AQUI"
 }
