@@ -1,4 +1,4 @@
-/* Tema da loja e do painel. Cores, fontes e espaços ficam nas variáveis. */
+l/* Tema da loja e do painel. Cores, fontes e espaços ficam nas variáveis. */
 :root{--cor-primaria:#0b6b57;--cor-escura:#16231f;--cor-fundo:#f6f4ef;--cor-card:#fff;--cor-texto:#1d1f1c;--cor-suave:#6a706b;--cor-destaque:#e4572e;--cor-borda:#e2ded4;--fonte:"Avenir Next","Segoe UI",system-ui,sans-serif;--raio:14px;--sombra:0 1px 2px #0001,0 6px 18px #0000000d;--esp:16px}
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--fonte);background:var(--cor-fundo);color:var(--cor-texto);line-height:1.5}
