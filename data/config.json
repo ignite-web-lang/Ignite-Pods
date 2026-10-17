@@ -5,7 +5,7 @@
  "rodape": "© Minha Loja",
  "whatsapp": "5500000000000",
  "api_pagamento": "/api/criar-pagamento",
- "supabase_url": "https://zslcrkrxlavarouvqeqj.supabase.co/rest/v1/.supabase.co",
+ "supabase_url": ""supabase_url": "https://zslcrkrxlavarouvqeqj.supabase.co",
  "supabase_key": "sb_publishable_OIkt7DLCHa8CQpSMZoB-ag_FoZhynXD",
  "frete": {
   "gratis_acima": 999999999,
