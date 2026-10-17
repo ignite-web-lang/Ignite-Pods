@@ -1,19 +1,69 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Painel</title><link rel="stylesheet" href="css/tema.css"></head><body>
-<header><h1>Painel</h1><button class="btn" id="sair" hidden>Sair</button></header>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel</title>
+<link rel="stylesheet" href="css/tema.css">
+</head>
+<body>
+<header>
+  <h1>Painel</h1>
+  <button class="btn" id="sair" hidden>Sair</button>
+</header>
+
 <main style="padding:16px;max-width:760px;margin:auto">
-<form id="lg" class="g"><h2>Entrar</h2><input id="em" type="email" placeholder="E-mail" required><input id="se" type="password" placeholder="Senha" required><button class="btn">Entrar</button></form>
-<div id="ap" hidden>
-<p><button class="btn" onclick="aba('p')">Produtos</button> <button class="btn" onclick="aba('o')">Pedidos</button></p>
-<section id="sp"><form id="fp" class="g"><h2 id="ft">Novo produto</h2>
-<input id="pn" placeholder="Nome" required><input id="pc" placeholder="Categoria" required><textarea id="pd" placeholder="Descrição"></textarea>
-<label>Foto principal <input id="pf" type="file" accept="image/*"></label><small id="pu"></small>
-<h3>Variações</h3>
-<textarea id="vg" rows="4" placeholder="Uma linha por opção:&#10;Cor: Preto, Branco&#10;Tamanho: P, M, G"></textarea>
-<input id="vp" type="number" step="0.01" placeholder="Preço de cada variação"><input id="ve" type="number" placeholder="Estoque de cada variação">
-<button type="button" class="btn" onclick="gerar()">Gerar combinações</button>
-<div id="vl"></div>
-<button type="button" onclick="linha()">+ linha</button>
-<button class="btn">Salvar produto</button><button type="button" onclick="novo()">Limpar</button></form>
-<div id="lp"></div></section>
-<section id="so" hidden><div id="lo"></div></section></div></main>
-<script src="js/admin.js"></script></body></html>
+  <form id="lg" class="g">
+    <h2>Entrar</h2>
+    <input id="em" type="email" placeholder="E-mail" required>
+    <input id="se" type="password" placeholder="Senha" required>
+    <button class="btn">Entrar</button>
+  </form>
+
+  <div id="ap" hidden>
+    <p>
+      <button class="btn" onclick="aba('p')">Produtos</button>
+      <button class="btn" onclick="aba('o')">Pedidos</button>
+    </p>
+
+    <section id="sp">
+      <form id="fp" class="g">
+        <h2 id="ft">Novo produto</h2>
+        <input id="pn" placeholder="Nome" required>
+        <input id="pc" placeholder="Categoria" required>
+        <textarea id="pd" placeholder="Descrição"></textarea>
+
+        <label>Foto principal <input id="pf" type="file" accept="image/*"></label>
+        <small id="pu"></small>
+
+        <h3>Desconto do produto</h3>
+        <select id="dtipo">
+          <option value="">Sem desconto</option>
+          <option value="fixo">Valor fixo (R$)</option>
+          <option value="porcentagem">Porcentagem (%)</option>
+        </select>
+        <input id="dvalor" type="number" step="0.01" min="0" placeholder="Valor do desconto (ex: 20 ou 15)">
+
+        <h3>Variações</h3>
+        <textarea id="vg" rows="4" placeholder="Uma linha por opção:&#10;Cor: Preto, Branco&#10;Tamanho: P, M, G"></textarea>
+        <input id="vp" type="number" step="0.01" placeholder="Preço de cada variação">
+        <input id="ve" type="number" placeholder="Estoque de cada variação">
+        <button type="button" class="btn" onclick="gerar()">Gerar combinações</button>
+        <div id="vl"></div>
+        <button type="button" onclick="linha()">+ linha</button>
+        <button class="btn">Salvar produto</button>
+        <button type="button" onclick="novo()">Limpar</button>
+      </form>
+      <div id="lp"></div>
+    </section>
+
+    <section id="so" hidden>
+      <div id="lo"></div>
+    </section>
+  </div>
+</main>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
