@@ -6,9 +6,18 @@ module.exports=async(req,res)=>{
  if(!ids.length||ids.some(n=>!(n>0)))return res.status(400).json({erro:'itens'});
  try{
   const h={apikey:C.supabase_key,Authorization:'Bearer '+C.supabase_key};
-  const V=await(await fetch(`${C.supabase_url}/rest/v1/variacoes?id=in.(${ids.join(',')})&select=id,preco,estoque,opcoes,produtos!inner(ativo,nome)`,{headers:h})).json();
+  const V=await(await fetch(`\( {C.supabase_url}/rest/v1/variacoes?id=in.( \){ids.join(',')})&select=id,preco,estoque,opcoes,produtos!inner(ativo,nome,desconto_tipo,desconto_valor)`,{headers:h})).json();
   let total=0;const reg=[];
-  for(const i of itens){const v=Array.isArray(V)&&V.find(x=>x.id===parseInt(i.id,10));if(!v||!v.produtos.ativo||!(i.qtd>0)||i.qtd>v.estoque)return res.status(400).json({erro:'item inválido'});total+=v.preco*i.qtd;reg.push({nome:(v.produtos.nome+' '+Object.values(v.opcoes||{}).join('/')).trim(),qtd:i.qtd,preco:v.preco})}
+  for(const i of itens){
+   const v=Array.isArray(V)&&V.find(x=>x.id===parseInt(i.id,10));
+   if(!v||!v.produtos.ativo||!(i.qtd>0)||i.qtd>v.estoque)return res.status(400).json({erro:'item inválido'});
+   let preco=v.preco;
+   const p=v.produtos;
+   if(p.desconto_tipo==='fixo'&&p.desconto_valor>0)preco=Math.max(0,preco-Number(p.desconto_valor));
+   else if(p.desconto_tipo==='porcentagem'&&p.desconto_valor>0)preco=Math.max(0,preco*(1-Number(p.desconto_valor)/100));
+   total+=preco*i.qtd;
+   reg.push({nome:(v.produtos.nome+' '+Object.values(v.opcoes||{}).join('/')).trim(),qtd:i.qtd,preco});
+  }
   total*=1-(C.cupons[(cupom||'').toUpperCase()]||0)/100;
   if(total<C.frete.gratis_acima)total+=C.frete.regioes[(cep||'0')[0]]??C.frete.base;
   total=Math.round(total*100)/100;
