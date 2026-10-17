@@ -1,0 +1,15 @@
+{
+ "nome": "Casa & Lar Eletro",
+ "banner_titulo": "Eletrodomésticos para a casa toda",
+ "banner_texto": "Geladeiras, fogões e mais, com entrega para todo o Brasil.",
+ "rodape": "© Casa & Lar Eletro · Troque este texto em data/config.json",
+ "whatsapp": "5500000000000",
+ "api_pagamento": "/api/criar-pagamento",
+ "avaliacoes_auto_aprovar": true,
+ "frete": {
+  "gratis_acima": 3000,
+  "base": 59.9,
+  "regioes": {"0":39.9,"1":39.9,"2":59.9,"3":59.9,"4":69.9,"5":69.9,"6":89.9,"7":79.9,"8":59.9,"9":59.9}
+ },
+ "cupons": {"BEMVINDO": 10}
+}
