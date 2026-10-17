@@ -1,12 +1,12 @@
 {
- "nome": "SHOPEE",
+ "nome": "Casa & Lar Eletro",
  "banner_titulo": "Tudo o que você procura em um só lugar",
  "banner_texto": "Milhares de produtos, com entrega para todo o Brasil.",
- "rodape": "© SHOPEE",
+ "rodape": "© Minha Loja",
  "whatsapp": "5500000000000",
  "api_pagamento": "/api/criar-pagamento",
- "supabase_url": "COLE_AQUI_A_PROJECT_URL",
- "supabase_key": "COLE_AQUI_A_CHAVE_ANON_PUBLICA",
+ "supabase_url": "https://zslcrkrxlavarouvqeqj.supabase.co/rest/v1/.supabase.co",
+ "supabase_key": "sb_publishable_OIkt7DLCHa8CQpSMZoB-ag_FoZhynXD",
  "frete": {
   "gratis_acima": 999999999,
   "base": 14.9,
