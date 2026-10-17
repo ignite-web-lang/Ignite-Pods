@@ -4,13 +4,21 @@ const api=async(m,p,b,x)=>{const r=await fetch(C.supabase_url+'/rest/v1/'+p,{met
  if(r.status==401){sessionStorage.removeItem('tk');location.reload()}
  if(!r.ok){alert('Erro: '+await r.text());throw 0}return r.status==204?null:r.json().catch(()=>null)};
 async function init(){C=await(await fetch('data/config.json')).json();if(T)entrar()}
-$('#lg').onsubmit=async e=>{e.preventDefault();try{const r=await fetch(C.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:C.supabase_key,'Content-Type':'application/json'},body:JSON.stringify({email:$('#em').value.trim(),password:$('#se').value})});const j=await r.json();if(!j.access_token)return alert('Não entrou: '+(j.msg||j.error_description||j.message||JSON.stringify(j)));T=sessionStorage.tk=j.access_token;entrar()}catch(x){alert('Erro de conexão: '+x+'. Confira a URL e a chave no data/config.json.')}}; fetch(C.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:C.supabase_key,'Content-Type':'application/json'},body:JSON.stringify({email:$('#em').value,password:$('#se').value})});const j=await r.json();if(!j.access_token)return alert('E-mail ou senha incorretos.');T=sessionStorage.tk=j.access_token;entrar()};
+$('#lg').onsubmit=async e=>{e.preventDefault();
+ try{
+  const r=await fetch(C.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:C.supabase_key,'Content-Type':'application/json'},body:JSON.stringify({email:$('#em').value.trim(),password:$('#se').value})});
+  const j=await r.json();
+  if(!j.access_token)return alert('Não entrou: '+(j.msg||j.error_description||j.message||JSON.stringify(j)));
+  T=sessionStorage.tk=j.access_token;entrar();
+ }catch(x){alert('Erro de conexão: '+x+'. Confira a URL e a chave no data/config.json.')}
+};
 $('#sair').onclick=()=>{sessionStorage.removeItem('tk');location.reload()};
 function entrar(){$('#lg').hidden=true;$('#ap').hidden=false;$('#sair').hidden=false;lista()}
 window.aba=a=>{$('#sp').hidden=a!='p';$('#so').hidden=a!='o';a=='o'?pedidos():lista()};
 async function lista(){const l=await api('GET','produtos?select=id,nome,ativo&order=id.desc&limit=200');
  $('#lp').innerHTML='<h3>Seus produtos</h3>'+l.map(p=>`<div class="li"><span>${E(p.nome)}${p.ativo?'':' (oculto)'}</span><span><button onclick="edit(${p.id})">Editar</button> <button onclick="ocultar(${p.id},${!p.ativo})">${p.ativo?'Ocultar':'Mostrar'}</button> <button onclick="apagar(${p.id})">Apagar</button></span></div>`).join('')}
 function linha(o='',p='',e=''){$('#vl').insertAdjacentHTML('beforeend',`<div class="li"><input placeholder="Cor=Preto; Tamanho=M" value="${E(o)}"><input type="number" step="0.01" placeholder="Preço" value="${p}" style="width:90px"><input type="number" placeholder="Estoque" value="${e}" style="width:80px"><button type="button" onclick="this.parentNode.remove()">✕</button></div>`)}
+window.linha=linha;
 window.gerar=()=>{const g=$('#vg').value.split('\n').map(l=>l.split(':')).filter(a=>a.length>1).map(([k,v])=>[k.trim(),v.split(',').map(x=>x.trim()).filter(Boolean)]);let c=[[]];g.forEach(([k,vs])=>c=c.flatMap(a=>vs.map(v=>[...a,k+'='+v])));$('#vl').innerHTML='';c.forEach(a=>linha(a.join('; '),$('#vp').value,$('#ve').value))};
 window.novo=()=>{eid=null;img='';$('#fp').reset();$('#ft').textContent='Novo produto';$('#pu').textContent='';$('#vl').innerHTML=''};
 window.edit=async id=>{const[p]=await api('GET','produtos?id=eq.'+id+'&select=*,variacoes(*)');eid=id;img=p.imagem||'';$('#ft').textContent='Editando: '+p.nome;$('#pn').value=p.nome;$('#pc').value=p.categoria;$('#pd').value=p.descricao||'';$('#pu').textContent=img?'Foto atual mantida':'';$('#vl').innerHTML='';p.variacoes.forEach(v=>linha(Object.entries(v.opcoes||{}).map(([k,x])=>k+'='+x).join('; '),v.preco,v.estoque));scrollTo(0,0)};
