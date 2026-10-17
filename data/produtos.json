@@ -22,5 +22,8 @@
 {"id":"p21","nome":"Jogo de Garfos Inox 12 peças","categoria":"Talheres","marca":"Casa Forte","preco":59,"antigo":79,"descricao":"Acabamento polido, vai à lava-louças.","specs":"Aço inox · 12 peças","estoque":50,"imagem":"","destaque":false,"ativo":true},
 {"id":"p22","nome":"Jogo de Colheres Inox 12 peças","categoria":"Talheres","marca":"Casa Forte","preco":59,"antigo":79,"descricao":"Colheres de mesa resistentes.","specs":"Aço inox · 12 peças","estoque":50,"imagem":"","destaque":false,"ativo":true},
 {"id":"p23","nome":"Kit Talheres Completo 24 peças","categoria":"Talheres","marca":"Vitta","preco":149,"antigo":189,"descricao":"Facas, garfos e colheres em um só kit.","specs":"Aço inox · 24 peças","estoque":20,"imagem":"","destaque":true,"ativo":true},
-{"id":"p24","nome":"Facas de Churrasco 6 peças","categoria":"Talheres","marca":"Nórdica","preco":129,"antigo":159,"descricao":"Lâmina serrilhada e cabo de madeira.","specs":"Inox · Cabo madeira","estoque":18,"imagem":"","destaque":false,"ativo":true}
+{"id":"p24","nome":"Facas de Churrasco 6 peças","categoria":"Talheres","marca":"Nórdica","preco":129,"antigo":159,"descricao":"Lâmina serrilhada e cabo de madeira.","specs":"Inox · Cabo madeira","estoque":18,"imagem":"","destaque":false,"ativo":true},
+  {"id":"p25","nome":"pod","categoria":"Testes","marca":"Teste","preco":1,"antigo":0,"descricao":"Produto de teste.","specs":"Teste","estoque":99,"imagem":"","destaque":false,"ativo":true},
+{"id":"p26","nome":"pod1","categoria":"Testes","marca":"Teste","preco":5,"antigo":0,"descricao":"Produto de teste.","specs":"Teste","estoque":99,"imagem":"","destaque":false,"ativo":true},
+{"id":"p27","nome":"pod2","categoria":"Testes","marca":"Teste","preco":10,"antigo":0,"descricao":"Produto de teste.","specs":"Teste","estoque":99,"imagem":"","destaque":false,"ativo":true}
 ]
