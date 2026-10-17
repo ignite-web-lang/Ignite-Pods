@@ -14,3 +14,4 @@ dialog{width:min(560px,94vw);max-height:90vh;border:0;border-radius:var(--raio);
 .x{float:right;background:none;border:0;font-size:1.3rem;cursor:pointer}.li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--cor-borda)}
 form.g{display:grid;gap:8px;margin:12px 0}footer{padding:24px var(--esp);background:var(--cor-escura);color:#fff;text-align:center}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+[hidden]{display:none!important}
