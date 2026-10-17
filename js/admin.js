@@ -1,274 +1,37 @@
-let C, T = sessionStorage.tk || '', eid = null, img = '';
-
-const api = async (m, p, b, x) => {
-  const r = await fetch(C.supabase_url + '/rest/v1/' + p, {
-    method: m,
-    headers: {
-      apikey: C.supabase_key,
-      Authorization: 'Bearer ' + T,
-      'Content-Type': 'application/json',
-      ...x
-    },
-    body: b ? JSON.stringify(b) : undefined
-  });
-  if (r.status == 401) {
-    sessionStorage.removeItem('tk');
-    location.reload();
-  }
-  if (!r.ok) {
-    alert('Erro: ' + await r.text());
-    throw 0;
-  }
-  return r.status == 204 ? null : r.json().catch(() => null);
+const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';'),R=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+let C,T=sessionStorage.tk||'',eid=null,img='';
+const api=async(m,p,b,x)=>{const r=await fetch(C.supabase_url+'/rest/v1/'+p,{method:m,headers:{apikey:C.supabase_key,Authorization:'Bearer '+T,'Content-Type':'application/json',...x},body:b?JSON.stringify(b):undefined});
+ if(r.status==401){sessionStorage.removeItem('tk');location.reload()}
+ if(!r.ok){alert('Erro: '+await r.text());throw 0}return r.status==204?null:r.json().catch(()=>null)};
+async function init(){C=await(await fetch('data/config.json')).json();if(T)entrar()}
+$('#lg').onsubmit=async e=>{e.preventDefault();
+ try{
+  const r=await fetch(C.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:C.supabase_key,'Content-Type':'application/json'},body:JSON.stringify({email:$('#em').value.trim(),password:$('#se').value})});
+  const j=await r.json();
+  if(!j.access_token)return alert('Não entrou: '+(j.msg||j.error_description||j.message||'erro'));
+  T=sessionStorage.tk=j.access_token;$('#se').value='';entrar();
+ }catch(x){alert('Erro de conexão. Confira a URL e a chave no data/config.json.')}
 };
-
-async function init() {
-  C = await loadConfig();
-  if (T) entrar();
-}
-
-$('#lg').onsubmit = async e => {
-  e.preventDefault();
-  try {
-    const r = await fetch(C.supabase_url + '/auth/v1/token?grant_type=password', {
-      method: 'POST',
-      headers: {
-        apikey: C.supabase_key,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: $('#em').value.trim(),
-        password: $('#se').value
-      })
-    });
-    const j = await r.json();
-    if (!j.access_token) return alert('Não entrou: ' + (j.msg || j.error_description || j.message || JSON.stringify(j)));
-    T = sessionStorage.tk = j.access_token;
-    entrar();
-  } catch (x) {
-    alert('Erro de conexão: ' + x + '. Confira a URL e a chave no data/config.json.');
-  }
-};
-
-$('#sair').onclick = () => {
-  sessionStorage.removeItem('tk');
-  location.reload();
-};
-
-function entrar() {
-  $('#lg').hidden = true;
-  $('#ap').hidden = false;
-  $('#sair').hidden = false;
-  lista();
-}
-
-function aba(t) {
-  $('#sp').hidden = t !== 'p';
-  $('#so').hidden = t !== 'o';
-  if (t === 'o') pedidos();
-  if (t === 'p') lista();
-}
-
-async function lista() {
-  const l = await api('GET', 'produtos?select=id,nome,ativo&order=id.desc&limit=200');
-  $('#lp').innerHTML = '<h3>Seus produtos</h3>' + (l || []).map(p => `
-    <div class="li">
-      <span>${E(p.nome)} ${p.ativo ? '' : '(oculto)'}</span>
-      <span>
-        <button onclick="editar(${p.id})">Editar</button>
-        <button onclick="ocultar(${p.id}, \( {!p.ativo})"> \){p.ativo ? 'Ocultar' : 'Mostrar'}</button>
-      </span>
-    </div>
-  `).join('') || '<p>Nenhum produto cadastrado.</p>';
-}
-
-async function editar(id) {
-  const p = (await api('GET', `produtos?id=eq.${id}&select=*,variacoes(*)`))[0];
-  if (!p) return;
-  eid = p.id;
-  $('#ft').textContent = 'Editar produto';
-  $('#pn').value = p.nome || '';
-  $('#pc').value = p.categoria || '';
-  $('#pd').value = p.descricao || '';
-  $('#dtipo').value = p.desconto_tipo || '';
-  $('#dvalor').value = p.desconto_valor || '';
-  img = p.imagem || '';
-  $('#pu').textContent = img ? 'Foto atual mantida' : '';
-  $('#vl').innerHTML = '';
-  (p.variacoes || []).forEach(v => {
-    const d = document.createElement('div');
-    d.className = 'li';
-    d.innerHTML = `
-      <input value="${E(Object.entries(v.opcoes || {}).map(([k, val]) => k + ': ' + val).join(' | '))}" placeholder="Opções">
-      <input type="number" step="0.01" value="${v.preco}" placeholder="Preço">
-      <input type="number" value="${v.estoque}" placeholder="Estoque">
-      <button type="button" onclick="this.parentNode.remove()">✕</button>
-    `;
-    $('#vl').append(d);
-  });
-  window.scrollTo(0, 0);
-}
-
-function novo() {
-  eid = null;
-  img = '';
-  $('#ft').textContent = 'Novo produto';
-  $('#fp').reset();
-  $('#pu').textContent = '';
-  $('#vl').innerHTML = '';
-  $('#dtipo').value = '';
-  $('#dvalor').value = '';
-}
-
-function linha() {
-  const d = document.createElement('div');
-  d.className = 'li';
-  d.innerHTML = `
-    <input placeholder="Opções (ex: Cor: Preto)">
-    <input type="number" step="0.01" placeholder="Preço">
-    <input type="number" placeholder="Estoque">
-    <button type="button" onclick="this.parentNode.remove()">✕</button>
-  `;
-  $('#vl').append(d);
-}
-
-function gerar() {
-  const linhas = $('#vg').value.trim().split('\n').filter(Boolean);
-  if (!linhas.length) return alert('Digite as opções no campo de variações');
-  const grupos = {};
-  linhas.forEach(l => {
-    const [k, ...vals] = l.split(':');
-    if (!k || !vals.length) return;
-    grupos[k.trim()] = vals.join(':').split(',').map(v => v.trim()).filter(Boolean);
-  });
-  const keys = Object.keys(grupos);
-  if (!keys.length) return;
-
-  function combinar(i, atual) {
-    if (i === keys.length) {
-      const d = document.createElement('div');
-      d.className = 'li';
-      d.innerHTML = `
-        <input value="${E(Object.entries(atual).map(([k, v]) => k + ': ' + v).join(' | '))}" placeholder="Opções">
-        <input type="number" step="0.01" value="\( { \)('#vp').value || ''}" placeholder="Preço">
-        <input type="number" value="\( { \)('#ve').value || ''}" placeholder="Estoque">
-        <button type="button" onclick="this.parentNode.remove()">✕</button>
-      `;
-      $('#vl').append(d);
-      return;
-    }
-    grupos[keys[i]].forEach(v => {
-      combinar(i + 1, { ...atual, [keys[i]]: v });
-    });
-  }
-  $('#vl').innerHTML = '';
-  combinar(0, {});
-}
-
-$('#pf').onchange = async e => {
-  const f = e.target.files[0];
-  if (!f) return;
-  const fd = new FormData();
-  fd.append('file', f);
-  try {
-    const r = await fetch(C.supabase_url + '/storage/v1/object/produtos/' + Date.now() + '-' + f.name, {
-      method: 'POST',
-      headers: {
-        apikey: C.supabase_key,
-        Authorization: 'Bearer ' + T
-      },
-      body: fd
-    });
-    if (!r.ok) throw await r.text();
-    const j = await r.json();
-    img = C.supabase_url + '/storage/v1/object/public/produtos/' + j.Key.split('/').pop();
-    $('#pu').textContent = 'Foto enviada com sucesso';
-  } catch (x) {
-    alert('Erro ao enviar foto: ' + x);
-  }
-};
-
-$('#fp').onsubmit = async e => {
-  e.preventDefault();
-  const nome = $('#pn').value.trim();
-  const categoria = $('#pc').value.trim();
-  const descricao = $('#pd').value.trim();
-  const desconto_tipo = $('#dtipo').value || null;
-  const desconto_valor = \( ('#dvalor').value ? Number( \)('#dvalor').value) : null;
-
-  if (!nome || !categoria) return alert('Preencha nome e categoria');
-
-  const vars = [...$('#vl').children].map(d => {
-    const inputs = d.querySelectorAll('input');
-    const opcoesTxt = inputs[0].value.trim();
-    const preco = Number(inputs[1].value) || 0;
-    const estoque = Number(inputs[2].value) || 0;
-    const opcoes = {};
-    opcoesTxt.split('|').forEach(p => {
-      const [k, ...v] = p.split(':');
-      if (k && v.length) opcoes[k.trim()] = v.join(':').trim();
-    });
-    return { opcoes, preco, estoque };
-  }).filter(v => Object.keys(v.opcoes).length);
-
-  if (!vars.length) return alert('Adicione pelo menos uma variação');
-
-  const preco_min = Math.min(...vars.map(v => v.preco));
-
-  const dados = {
-    nome,
-    categoria,
-    descricao,
-    imagem: img || null,
-    preco_min,
-    desconto_tipo,
-    desconto_valor,
-    ativo: true
-  };
-
-  try {
-    let pid = eid;
-    if (eid) {
-      await api('PATCH', `produtos?id=eq.${eid}`, dados);
-      await api('DELETE', `variacoes?produto_id=eq.${eid}`);
-    } else {
-      const r = await api('POST', 'produtos', dados, { Prefer: 'return=representation' });
-      pid = r[0].id;
-    }
-
-    for (const v of vars) {
-      await api('POST', 'variacoes', {
-        produto_id: pid,
-        opcoes: v.opcoes,
-        preco: v.preco,
-        estoque: v.estoque
-      });
-    }
-
-    alert('Produto salvo com sucesso!');
-    novo();
-    lista();
-  } catch (x) {
-    alert('Erro ao salvar: ' + x);
-  }
-};
-
-async function ocultar(id, ativo) {
-  await api('PATCH', `produtos?id=eq.${id}`, { ativo });
-  lista();
-}
-
-async function pedidos() {
-  const l = await api('GET', 'pedidos?select=*&order=id.desc&limit=50');
-  $('#lo').innerHTML = '<h3>Pedidos recentes</h3>' + (l || []).map(p => `
-    <div class="li">
-      <div>
-        <b>#${p.id}</b> — ${E(p.cliente?.nome || 'Cliente')}<br>
-        <small>${new Date(p.created_at).toLocaleString('pt-BR')} · ${R(p.total || 0)}</small>
-      </div>
-      <span>${E(p.status || 'novo')}</span>
-    </div>
-  `).join('') || '<p>Nenhum pedido ainda.</p>';
-}
-
+$('#sair').onclick=()=>{sessionStorage.removeItem('tk');location.reload()};
+function entrar(){$('#lg').hidden=true;$('#ap').hidden=false;$('#sair').hidden=false;lista()}
+window.aba=a=>{$('#sp').hidden=a!='p';$('#so').hidden=a!='o';a=='o'?pedidos():lista()};
+async function lista(){const l=await api('GET','produtos?select=id,nome,ativo&order=id.desc&limit=200');
+ $('#lp').innerHTML='<h3>Seus produtos</h3>'+l.map(p=>`<div class="li"><span>${E(p.nome)}${p.ativo?'':' (oculto)'}</span><span><button onclick="edit(${+p.id})">Editar</button> <button onclick="ocultar(${+p.id},${!p.ativo})">${p.ativo?'Ocultar':'Mostrar'}</button> <button onclick="apagar(${+p.id})">Apagar</button></span></div>`).join('')}
+function linha(o='',p='',e=''){$('#vl').insertAdjacentHTML('beforeend',`<div class="li"><input placeholder="Cor=Preto; Tamanho=M" value="${E(o)}"><input type="number" step="0.01" placeholder="Preço" value="${E(p)}" style="width:90px"><input type="number" placeholder="Estoque" value="${E(e)}" style="width:80px"><button type="button" onclick="this.parentNode.remove()">✕</button></div>`)}
+window.linha=linha;
+window.gerar=()=>{const g=$('#vg').value.split('\n').map(l=>l.split(':')).filter(a=>a.length>1).map(([k,v])=>[k.trim(),v.split(',').map(x=>x.trim()).filter(Boolean)]);let c=[[]];g.forEach(([k,vs])=>c=c.flatMap(a=>vs.map(v=>[...a,k+'='+v])));$('#vl').innerHTML='';c.forEach(a=>linha(a.join('; '),$('#vp').value,$('#ve').value))};
+window.novo=()=>{eid=null;img='';$('#fp').reset();$('#ft').textContent='Novo produto';$('#pu').textContent='';$('#vl').innerHTML=''};
+window.edit=async id=>{const[p]=await api('GET','produtos?id=eq.'+id+'&select=*,variacoes(*)');eid=id;img=p.imagem||'';$('#ft').textContent='Editando: '+p.nome;$('#pn').value=p.nome;$('#pc').value=p.categoria;$('#pd').value=p.descricao||'';$('#pu').textContent=img?'Foto atual mantida':'';$('#vl').innerHTML='';p.variacoes.forEach(v=>linha(Object.entries(v.opcoes||{}).map(([k,x])=>k+'='+x).join('; '),v.preco,v.estoque));scrollTo(0,0)};
+$('#pf').onchange=async e=>{const f=e.target.files[0];if(!f)return;const n=Date.now()+'-'+f.name.replace(/[^\w.-]/g,'_');const r=await fetch(C.supabase_url+'/storage/v1/object/fotos/'+n,{method:'POST',headers:{apikey:C.supabase_key,Authorization:'Bearer '+T,'Content-Type':f.type},body:f});if(!r.ok)return alert('Erro ao enviar a foto (use JPG, PNG ou WebP até 2 MB): '+await r.text());img=C.supabase_url+'/storage/v1/object/public/fotos/'+n;$('#pu').textContent='Foto enviada ✔'};
+$('#fp').onsubmit=async e=>{e.preventDefault();
+ const rows=[...$('#vl').children].map(d=>{const[i,p,s]=d.querySelectorAll('input');const o={};i.value.split(';').forEach(t=>{const[k,...v]=t.split('=');if(k&&k.trim()&&v.length)o[k.trim()]=v.join('=').trim()});return{opcoes:o,preco:parseFloat(p.value),estoque:parseInt(s.value)||0}});
+ if(!rows.length||rows.some(r=>!(r.preco>=0)))return alert('Adicione ao menos uma variação com preço.');
+ const b={nome:$('#pn').value,categoria:$('#pc').value,descricao:$('#pd').value,imagem:img||null};let id=eid;
+ if(id){await api('PATCH','produtos?id=eq.'+id,b);await api('DELETE','variacoes?produto_id=eq.'+id)}else{id=(await api('POST','produtos',b,{Prefer:'return=representation'}))[0].id}
+ await api('POST','variacoes',rows.map(r=>({...r,produto_id:id})));alert('Produto salvo!');novo();lista()};
+window.ocultar=async(id,a)=>{await api('PATCH','produtos?id=eq.'+id,{ativo:a});lista()};
+window.apagar=async id=>{if(confirm('Apagar este produto e suas variações?')){await api('DELETE','produtos?id=eq.'+id);lista()}};
+async function pedidos(){const l=await api('GET','pedidos?select=*&order=id.desc&limit=100');
+ $('#lo').innerHTML='<h3>Pedidos</h3>'+(l.length?l.map(p=>{const c=p.cliente||{};return`<div class="li" style="display:block"><b>#${+p.id} · ${R(p.total)} · ${E(p.status)}</b><br><small>${new Date(p.criado).toLocaleString('pt-BR')}</small><br>${(p.itens||[]).map(i=>E(i.nome)+' x'+E(i.qtd)).join('<br>')}<br><small>${E(c.nome)} · ${E(c.tel)} · ${E(c.end)}, ${E(c.num)}</small><br>${['aguardando','pago','enviado','cancelado'].map(s=>`<button onclick="st(${+p.id},'${s}')">${s}</button>`).join(' ')}</div>`}).join(''):'<p>Nenhum pedido ainda.</p>')}
+window.st=async(id,s)=>{await api('PATCH','pedidos?id=eq.'+id,{status:s});pedidos()};
 init();
