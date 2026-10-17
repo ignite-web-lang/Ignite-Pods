@@ -1,0 +1,16 @@
+/* TODO o visual vive aqui. Mude as variáveis e o site inteiro muda. */
+:root{--cor-primaria:#0f5c4d;--cor-escura:#12302b;--cor-fundo:#f4f6f3;--cor-card:#fff;--cor-texto:#1b2421;--cor-destaque:#c2410c;--cor-borda:#d5dcd7;--fonte:"Trebuchet MS",Verdana,sans-serif;--raio:10px;--sombra:0 1px 6px #0002;--esp:16px}
+*{box-sizing:border-box}body{margin:0;font-family:var(--fonte);background:var(--cor-fundo);color:var(--cor-texto);line-height:1.5}
+:focus-visible{outline:3px solid var(--cor-destaque);outline-offset:2px}
+header{position:sticky;top:0;z-index:5;display:flex;gap:var(--esp);align-items:center;padding:12px var(--esp);background:var(--cor-escura);color:#fff}
+header h1{font-size:1.15rem;margin:0;white-space:nowrap}header input{flex:1;min-width:0;padding:10px;border-radius:var(--raio);border:0}
+#hero{padding:40px var(--esp);background:var(--cor-primaria);color:#fff}#hero h2{font-size:clamp(1.8rem,6vw,3rem);margin:0 0 8px;max-width:16ch;line-height:1.1}#hero p{margin:0;max-width:50ch}
+.filtros{display:flex;gap:8px;padding:var(--esp);flex-wrap:wrap}select,input,textarea{font:inherit;padding:9px;border:1px solid var(--cor-borda);border-radius:var(--raio)}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--esp);padding:0 var(--esp) var(--esp)}
+.card{background:var(--cor-card);border-radius:var(--raio);box-shadow:var(--sombra);padding:12px;display:flex;flex-direction:column;gap:4px}
+.card img,dialog img{width:100%;border-radius:var(--raio)}.card h3{font-size:1rem;margin:4px 0}.card s{color:#6b7570;font-size:.85rem}.card b{font-size:1.15rem}
+.btn{background:var(--cor-destaque);color:#fff;border:0;border-radius:var(--raio);padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}.btn:disabled{opacity:.5}
+dialog{width:min(560px,94vw);max-height:90vh;border:0;border-radius:var(--raio);padding:var(--esp)}dialog::backdrop{background:#0008}
+.x{float:right;background:none;border:0;font-size:1.3rem;cursor:pointer}.li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--cor-borda)}
+form.g{display:grid;gap:8px;margin:12px 0}footer{padding:24px var(--esp);background:var(--cor-escura);color:#fff;text-align:center}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
